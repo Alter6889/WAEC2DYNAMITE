@@ -1,34 +1,30 @@
 package pe.edu.cibertec.WAEC2Dynamite.models;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+
+import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-@Data
+import lombok.NoArgsConstructor;
+
+import java.util.Set;
+
+@NoArgsConstructor
 @Entity
-@Table (name="usuario")
+@Data
+@Table(name="usuario")
 public class Usuario {
     @Id
-    @Getter
-    @Setter
-    private int idusuario;
-    @Getter
-    @Setter
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer idusuario;
     private String nomusuario;
-    @Getter
-    @Setter
     private String email;
-    @Getter
-    @Setter
     private String password;
-    @Getter
-    @Setter
     private String nombres;
-    @Getter
-    @Setter
     private String apellidos;
-    @Getter
-    @Setter
-    private int activo;
+    private Boolean activo;
+    @ManyToMany(cascade = CascadeType.MERGE,
+            fetch = FetchType.EAGER)
+    @JoinTable(name = "usuario_rol",
+            joinColumns = @JoinColumn(name = "idusuario"),
+            inverseJoinColumns = @JoinColumn(name = "idrol"))
+    private Set<Rol> roles;
+
 }
